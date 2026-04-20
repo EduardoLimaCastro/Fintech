@@ -1,0 +1,3 @@
+com\eduardo\api_gateway\infrastructure\filter\TraceIdFilter.class
+com\eduardo\api_gateway\infrastructure\config\SecurityConfig.class
+com\eduardo\api_gateway\ApiGatewayApplication.class

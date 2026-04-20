@@ -1,0 +1,3 @@
+D:\Projetos\Fintech\api_gateway\src\main\java\com\eduardo\api_gateway\ApiGatewayApplication.java
+D:\Projetos\Fintech\api_gateway\src\main\java\com\eduardo\api_gateway\infrastructure\config\SecurityConfig.java
+D:\Projetos\Fintech\api_gateway\src\main\java\com\eduardo\api_gateway\infrastructure\filter\TraceIdFilter.java

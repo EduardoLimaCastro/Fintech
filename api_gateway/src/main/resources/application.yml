@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: api-gateway
+  profiles:
+    active: dev
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${AUTH_JWK_URI:http://localhost:8015/oauth2/jwks}
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: ${AUTH_SERVICE_URI:http://localhost:8015}
+          predicates:
+            - Path=/auth/**
+
+        - id: account-service
+          uri: ${ACCOUNT_SERVICE_URI:http://localhost:8011}
+          predicates:
+            - Path=/api/accounts/**
+
+        - id: agency-service
+          uri: ${AGENCY_SERVICE_URI:http://localhost:8012}
+          predicates:
+            - Path=/api/agencies/**
+
+        - id: user-service
+          uri: ${USER_SERVICE_URI:http://localhost:8013}
+          predicates:
+            - Path=/api/users/**
+
+        - id: transaction-service
+          uri: ${TRANSACTION_SERVICE_URI:http://localhost:8014}
+          predicates:
+            - Path=/api/transactions/**
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always

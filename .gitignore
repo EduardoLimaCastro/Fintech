@@ -1,0 +1,11 @@
+.claude
+.idea
+.playwright-mcp
+.node_modules
+
+
+CLAUDE.md
+package-lock.json
+package.json
+SPEC.md
+TSD.md

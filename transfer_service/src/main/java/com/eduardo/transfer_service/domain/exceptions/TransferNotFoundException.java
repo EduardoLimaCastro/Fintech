@@ -1,0 +1,9 @@
+package com.eduardo.transfer_service.domain.exceptions;
+
+import java.util.UUID;
+
+public class TransferNotFoundException extends RuntimeException {
+    public TransferNotFoundException(UUID id) {
+        super("Transfer not found with id: " + id);
+    }
+}

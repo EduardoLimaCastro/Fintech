@@ -1,0 +1,51 @@
+version: '3.8'
+
+# Transfer Service — Docker Compose
+# Uso: docker-compose up -d
+# Requer a stack Kafka rodando: docker-compose -f ../docker-compose.kafka.yml up -d
+
+services:
+
+  transfer-db:
+    image: postgres:16-alpine
+    container_name: fintech-transfer-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: transfer_service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5438:5432"
+    volumes:
+      - transfer_db_data:/var/lib/postgresql/data
+    networks:
+      - transfer-net
+
+  transfer-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fintech-transfer-service
+    restart: unless-stopped
+    ports:
+      - "8086:8016"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:postgresql://transfer-db:5432/transfer_service
+      DB_USER: postgres
+      DB_PASSWORD: password
+      AUTH_JWK_URI: http://auth-service:8015/oauth2/jwks
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9094
+      ZIPKIN_URL: http://zipkin:9411
+      LOKI_URL: http://loki:3100
+    depends_on:
+      - transfer-db
+    networks:
+      - transfer-net
+
+volumes:
+  transfer_db_data:
+
+networks:
+  transfer-net:
+    driver: bridge

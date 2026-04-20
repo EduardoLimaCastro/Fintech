@@ -1,0 +1,472 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-04-12T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app",
+  "resources": [
+    {
+      "_id": "wrk_fintech",
+      "_type": "workspace",
+      "name": "Fintech Platform",
+      "description": "Collection completa de todos os endpoints da plataforma Fintech",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_fintech",
+      "name": "Local Dev",
+      "data": {
+        "account_url": "http://localhost:8011",
+        "agency_url": "http://localhost:8012",
+        "user_url": "http://localhost:8013",
+        "transaction_url": "http://localhost:8014",
+        "auth_url": "http://localhost:8015",
+        "account_id": "00000000-0000-0000-0000-000000000001",
+        "agency_id": "00000000-0000-0000-0000-000000000002",
+        "user_id": "00000000-0000-0000-0000-000000000003",
+        "transaction_id": "00000000-0000-0000-0000-000000000004",
+        "access_token": "",
+        "refresh_token": ""
+      },
+      "isPrivate": false
+    },
+
+    {
+      "_id": "fld_account",
+      "_type": "request_group",
+      "parentId": "wrk_fintech",
+      "name": "Account Service (8011)",
+      "description": "Gestão de contas financeiras — porta 8011"
+    },
+    {
+      "_id": "req_account_create",
+      "_type": "request",
+      "parentId": "fld_account",
+      "name": "Criar conta",
+      "method": "POST",
+      "url": "{{ _.account_url }}/api/accounts",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"ownerId\": \"{{ _.user_id }}\",\n  \"accountDigit\": \"1\",\n  \"agencyId\": \"{{ _.agency_id }}\",\n  \"balance\": 1000.00,\n  \"overdraftLimit\": 500.00,\n  \"transferLimit\": 2000.00,\n  \"accountType\": \"PERSONAL\"\n}"
+      }
+    },
+    {
+      "_id": "req_account_list",
+      "_type": "request",
+      "parentId": "fld_account",
+      "name": "Listar contas",
+      "method": "GET",
+      "url": "{{ _.account_url }}/api/accounts",
+      "parameters": [
+        { "name": "accountNumber", "value": "", "disabled": true },
+        { "name": "accountType", "value": "PERSONAL", "disabled": true },
+        { "name": "accountStatus", "value": "ACTIVE", "disabled": true },
+        { "name": "page", "value": "0", "disabled": false },
+        { "name": "size", "value": "20", "disabled": false },
+        { "name": "sort", "value": "createdAt,desc", "disabled": true }
+      ],
+      "headers": []
+    },
+    {
+      "_id": "req_account_find_by_id",
+      "_type": "request",
+      "parentId": "fld_account",
+      "name": "Buscar conta por ID",
+      "method": "GET",
+      "url": "{{ _.account_url }}/api/accounts/{{ _.account_id }}",
+      "headers": []
+    },
+    {
+      "_id": "req_account_update",
+      "_type": "request",
+      "parentId": "fld_account",
+      "name": "Atualizar conta",
+      "method": "PUT",
+      "url": "{{ _.account_url }}/api/accounts/{{ _.account_id }}",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"ownerId\": \"{{ _.user_id }}\",\n  \"accountDigit\": \"1\",\n  \"agencyId\": \"{{ _.agency_id }}\",\n  \"status\": \"ACTIVE\",\n  \"overdraftLimit\": 1000.00,\n  \"transferLimit\": 3000.00,\n  \"accountType\": \"PERSONAL\",\n  \"fraudBlocked\": false\n}"
+      }
+    },
+    {
+      "_id": "req_account_delete",
+      "_type": "request",
+      "parentId": "fld_account",
+      "name": "Deletar conta",
+      "method": "DELETE",
+      "url": "{{ _.account_url }}/api/accounts/{{ _.account_id }}",
+      "headers": []
+    },
+    {
+      "_id": "req_account_activate",
+      "_type": "request",
+      "parentId": "fld_account",
+      "name": "Ativar conta",
+      "method": "PATCH",
+      "url": "{{ _.account_url }}/api/accounts/{{ _.account_id }}/activate",
+      "headers": []
+    },
+    {
+      "_id": "req_account_block",
+      "_type": "request",
+      "parentId": "fld_account",
+      "name": "Bloquear conta",
+      "method": "PATCH",
+      "url": "{{ _.account_url }}/api/accounts/{{ _.account_id }}/block",
+      "headers": []
+    },
+    {
+      "_id": "req_account_close",
+      "_type": "request",
+      "parentId": "fld_account",
+      "name": "Fechar conta",
+      "method": "PATCH",
+      "url": "{{ _.account_url }}/api/accounts/{{ _.account_id }}/close",
+      "headers": []
+    },
+
+    {
+      "_id": "fld_agency",
+      "_type": "request_group",
+      "parentId": "wrk_fintech",
+      "name": "Agency Service (8012)",
+      "description": "Gestão de agências bancárias — porta 8012"
+    },
+    {
+      "_id": "req_agency_create",
+      "_type": "request",
+      "parentId": "fld_agency",
+      "name": "Criar agência",
+      "method": "POST",
+      "url": "{{ _.agency_url }}/api/agencies",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Agência Centro\",\n  \"code\": \"0001\",\n  \"digit\": \"5\",\n  \"address\": {\n    \"zipCode\": \"01310-100\",\n    \"street\": \"Av. Paulista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\",\n    \"district\": \"Bela Vista\",\n    \"number\": \"1000\",\n    \"complement\": \"Andar 5\"\n  },\n  \"managerCode\": \"MGR001\",\n  \"managerName\": \"João Silva\",\n  \"phone\": \"11-9999-8888\",\n  \"email\": \"agencia.centro@banco.com\",\n  \"agencyType\": \"DEFAULT\"\n}"
+      }
+    },
+    {
+      "_id": "req_agency_list",
+      "_type": "request",
+      "parentId": "fld_agency",
+      "name": "Listar agências",
+      "method": "GET",
+      "url": "{{ _.agency_url }}/api/agencies",
+      "parameters": [
+        { "name": "name", "value": "", "disabled": true },
+        { "name": "status", "value": "ACTIVE", "disabled": true },
+        { "name": "agencyType", "value": "DEFAULT", "disabled": true },
+        { "name": "page", "value": "0", "disabled": false },
+        { "name": "size", "value": "20", "disabled": false },
+        { "name": "sort", "value": "name,asc", "disabled": true }
+      ],
+      "headers": []
+    },
+    {
+      "_id": "req_agency_find_by_id",
+      "_type": "request",
+      "parentId": "fld_agency",
+      "name": "Buscar agência por ID",
+      "method": "GET",
+      "url": "{{ _.agency_url }}/api/agencies/{{ _.agency_id }}",
+      "headers": []
+    },
+    {
+      "_id": "req_agency_update",
+      "_type": "request",
+      "parentId": "fld_agency",
+      "name": "Atualizar agência",
+      "method": "PUT",
+      "url": "{{ _.agency_url }}/api/agencies/{{ _.agency_id }}",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Agência Centro Atualizada\",\n  \"managerCode\": \"MGR002\",\n  \"managerName\": \"Maria Santos\",\n  \"phone\": \"11-8888-7777\",\n  \"email\": \"agencia.centro.nova@banco.com\",\n  \"address\": {\n    \"zipCode\": \"01310-100\",\n    \"street\": \"Av. Paulista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\",\n    \"district\": \"Bela Vista\",\n    \"number\": \"2000\",\n    \"complement\": \"\"\n  },\n  \"agencyType\": \"ENTERPRISE\"\n}"
+      }
+    },
+    {
+      "_id": "req_agency_delete",
+      "_type": "request",
+      "parentId": "fld_agency",
+      "name": "Deletar agência",
+      "method": "DELETE",
+      "url": "{{ _.agency_url }}/api/agencies/{{ _.agency_id }}",
+      "headers": []
+    },
+    {
+      "_id": "req_agency_activate",
+      "_type": "request",
+      "parentId": "fld_agency",
+      "name": "Ativar agência",
+      "method": "PATCH",
+      "url": "{{ _.agency_url }}/api/agencies/{{ _.agency_id }}/activate",
+      "headers": []
+    },
+    {
+      "_id": "req_agency_block",
+      "_type": "request",
+      "parentId": "fld_agency",
+      "name": "Bloquear agência",
+      "method": "PATCH",
+      "url": "{{ _.agency_url }}/api/agencies/{{ _.agency_id }}/block",
+      "headers": []
+    },
+    {
+      "_id": "req_agency_close",
+      "_type": "request",
+      "parentId": "fld_agency",
+      "name": "Fechar agência",
+      "method": "PATCH",
+      "url": "{{ _.agency_url }}/api/agencies/{{ _.agency_id }}/close",
+      "headers": []
+    },
+    {
+      "_id": "req_agency_update_contact",
+      "_type": "request",
+      "parentId": "fld_agency",
+      "name": "Atualizar contato da agência",
+      "method": "PATCH",
+      "url": "{{ _.agency_url }}/api/agencies/{{ _.agency_id }}/contact",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"phone\": \"11-7777-6666\",\n  \"email\": \"novo.contato@banco.com\"\n}"
+      }
+    },
+    {
+      "_id": "req_agency_update_address",
+      "_type": "request",
+      "parentId": "fld_agency",
+      "name": "Atualizar endereço da agência",
+      "method": "PATCH",
+      "url": "{{ _.agency_url }}/api/agencies/{{ _.agency_id }}/address",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"zipCode\": \"04538-133\",\n  \"street\": \"Av. Brigadeiro Faria Lima\",\n  \"city\": \"São Paulo\",\n  \"state\": \"SP\",\n  \"country\": \"Brasil\",\n  \"district\": \"Itaim Bibi\",\n  \"number\": \"3477\",\n  \"complement\": \"Torre B\"\n}"
+      }
+    },
+
+    {
+      "_id": "fld_user",
+      "_type": "request_group",
+      "parentId": "wrk_fintech",
+      "name": "User Service (8013)",
+      "description": "Gestão de usuários/clientes — porta 8013"
+    },
+    {
+      "_id": "req_user_create",
+      "_type": "request",
+      "parentId": "fld_user",
+      "name": "Criar usuário",
+      "method": "POST",
+      "url": "{{ _.user_url }}/users",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"username\": \"joao.silva\",\n  \"password\": \"Senha@123\",\n  \"email\": \"joao.silva@email.com\",\n  \"phone\": \"11-99999-8888\",\n  \"address\": {\n    \"zipCode\": \"01310-100\",\n    \"street\": \"Av. Paulista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\",\n    \"district\": \"Bela Vista\",\n    \"number\": \"500\",\n    \"complement\": \"Apto 12\"\n  },\n  \"userType\": \"PERSONAL\",\n  \"userCPF\": \"123.456.789-00\",\n  \"userCNPJ\": \"\"\n}"
+      }
+    },
+    {
+      "_id": "req_user_list",
+      "_type": "request",
+      "parentId": "fld_user",
+      "name": "Listar usuários",
+      "method": "GET",
+      "url": "{{ _.user_url }}/users",
+      "parameters": [
+        { "name": "username", "value": "", "disabled": true },
+        { "name": "email", "value": "", "disabled": true },
+        { "name": "userType", "value": "PERSONAL", "disabled": true },
+        { "name": "page", "value": "0", "disabled": false },
+        { "name": "size", "value": "20", "disabled": false },
+        { "name": "sort", "value": "username,asc", "disabled": true }
+      ],
+      "headers": []
+    },
+    {
+      "_id": "req_user_find_by_id",
+      "_type": "request",
+      "parentId": "fld_user",
+      "name": "Buscar usuário por ID",
+      "method": "GET",
+      "url": "{{ _.user_url }}/users/{{ _.user_id }}",
+      "headers": []
+    },
+    {
+      "_id": "req_user_update",
+      "_type": "request",
+      "parentId": "fld_user",
+      "name": "Atualizar usuário",
+      "method": "PUT",
+      "url": "{{ _.user_url }}/users/{{ _.user_id }}",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"username\": \"joao.silva.atualizado\",\n  \"password\": \"NovaSenha@456\",\n  \"phone\": \"11-88888-7777\",\n  \"email\": \"joao.novo@email.com\",\n  \"address\": {\n    \"zipCode\": \"04538-133\",\n    \"street\": \"Av. Brigadeiro Faria Lima\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\",\n    \"district\": \"Itaim Bibi\",\n    \"number\": \"100\",\n    \"complement\": \"\"\n  },\n  \"userType\": \"PERSONAL\"\n}"
+      }
+    },
+    {
+      "_id": "req_user_delete",
+      "_type": "request",
+      "parentId": "fld_user",
+      "name": "Deletar usuário",
+      "method": "DELETE",
+      "url": "{{ _.user_url }}/users/{{ _.user_id }}",
+      "headers": []
+    },
+
+    {
+      "_id": "fld_transaction",
+      "_type": "request_group",
+      "parentId": "wrk_fintech",
+      "name": "Transaction Service (8014)",
+      "description": "Registro imutável de transações financeiras — porta 8014"
+    },
+    {
+      "_id": "req_transaction_create",
+      "_type": "request",
+      "parentId": "fld_transaction",
+      "name": "Criar transação",
+      "method": "POST",
+      "url": "{{ _.transaction_url }}/transactions",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"type\": \"CREDIT\",\n  \"amount\": 500.00,\n  \"accountId\": \"{{ _.account_id }}\",\n  \"relatedAccountId\": null,\n  \"description\": \"Depósito inicial\",\n  \"status\": \"COMPLETED\"\n}"
+      }
+    },
+    {
+      "_id": "req_transaction_transfer",
+      "_type": "request",
+      "parentId": "fld_transaction",
+      "name": "Criar transferência",
+      "method": "POST",
+      "url": "{{ _.transaction_url }}/transactions",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"type\": \"TRANSFER\",\n  \"amount\": 200.00,\n  \"accountId\": \"{{ _.account_id }}\",\n  \"relatedAccountId\": \"00000000-0000-0000-0000-000000000099\",\n  \"description\": \"Transferência entre contas\",\n  \"status\": \"PENDING\"\n}"
+      }
+    },
+    {
+      "_id": "req_transaction_find_by_id",
+      "_type": "request",
+      "parentId": "fld_transaction",
+      "name": "Buscar transação por ID",
+      "method": "GET",
+      "url": "{{ _.transaction_url }}/transactions/{{ _.transaction_id }}",
+      "headers": []
+    },
+    {
+      "_id": "req_transaction_list",
+      "_type": "request",
+      "parentId": "fld_transaction",
+      "name": "Listar transações",
+      "method": "GET",
+      "url": "{{ _.transaction_url }}/transactions",
+      "parameters": [
+        { "name": "accountId", "value": "{{ _.account_id }}", "disabled": true },
+        { "name": "type", "value": "CREDIT", "disabled": true },
+        { "name": "status", "value": "COMPLETED", "disabled": true },
+        { "name": "createdAfter", "value": "2026-01-01T00:00:00", "disabled": true },
+        { "name": "createdBefore", "value": "2026-12-31T23:59:59", "disabled": true },
+        { "name": "page", "value": "0", "disabled": false },
+        { "name": "size", "value": "20", "disabled": false },
+        { "name": "sort", "value": "createdAt,desc", "disabled": true }
+      ],
+      "headers": []
+    },
+
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "parentId": "wrk_fintech",
+      "name": "Auth Service (8015)",
+      "description": "Autenticação JWT + RBAC — porta 8015"
+    },
+    {
+      "_id": "req_auth_register",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Registrar credencial",
+      "method": "POST",
+      "url": "{{ _.auth_url }}/auth/register",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"joao.silva@email.com\",\n  \"password\": \"Senha@123\",\n  \"role\": \"USER\",\n  \"userId\": \"{{ _.user_id }}\"\n}"
+      }
+    },
+    {
+      "_id": "req_auth_login",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login",
+      "method": "POST",
+      "url": "{{ _.auth_url }}/auth/login",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"joao.silva@email.com\",\n  \"password\": \"Senha@123\"\n}"
+      }
+    },
+    {
+      "_id": "req_auth_refresh",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Refresh token",
+      "method": "POST",
+      "url": "{{ _.auth_url }}/auth/refresh",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"refreshToken\": \"{{ _.refresh_token }}\"\n}"
+      }
+    },
+    {
+      "_id": "req_auth_logout",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Logout",
+      "method": "POST",
+      "url": "{{ _.auth_url }}/auth/logout",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"refreshToken\": \"{{ _.refresh_token }}\"\n}"
+      }
+    }
+  ]
+}
